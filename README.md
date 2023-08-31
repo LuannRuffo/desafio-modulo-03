@@ -101,7 +101,14 @@
 
 ## ⭐Cadastrar transação para o usuário logado
 
-🚧 em construção 🚧
+-   verifiquei campos no corpo(body)
+    -   descrição
+    -   valor
+    -   data
+    -   categoria_id
+    -   tipo
+-   validei se a categoria pertence ao usuario logado
+-   cadastrei a transação e retornei os dados da transação
 
 ## ⭐Atualizar transação do usuário logado
 
