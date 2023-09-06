@@ -93,7 +93,7 @@
 
 ## ⭐Listar transações do usuário logado
 
-🚧 em construção 🚧
+-   retornei todas as transações do usuario logado
 
 ## ⭐Detalhar uma transação do usuário logado
 

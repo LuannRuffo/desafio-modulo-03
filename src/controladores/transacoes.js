@@ -28,9 +28,9 @@ const criarTransacao = async (req, res) => {
 
         pool.query(
             `insert into transacoes
-            (descricao, valor, data, categoria_id, tipo)
-            values ($1, $2, $3, $4, $5)
-            `, [descricao, valor, data, categoria_id, tipo]
+            (descricao, valor, data, categoria_id, tipo, usuario_id)
+            values ($1, $2, $3, $4, $5, $6)
+            `, [descricao, valor, data, categoria_id, tipo, id_usuario]
         )
 
         const verificarDados =  await pool.query(
@@ -47,6 +47,26 @@ const criarTransacao = async (req, res) => {
     }
 }
 
+const listarTransacoes = async (req, res) => {
+
+    try {
+
+        const id_usuario = req.usuario[0].id
+
+        const lista = await pool.query(
+            'select * from transacoes where usuario_id = $1',
+            [id_usuario]
+        )
+
+        return res.status(200).json(lista.rows)
+        
+    } catch (error) {
+        
+        return res.status(500).json({ mensagem: error.message })
+    }
+}
+
 module.exports = {
-    criarTransacao
+    criarTransacao,
+    listarTransacoes
 }
