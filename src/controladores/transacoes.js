@@ -16,10 +16,11 @@ const criarTransacao = async (req, res) => {
         }
 
         const categoriaUsuario = await pool.query(
-            'select usuario_id from categorias where id = $1', [categoria_id]
+            'select * from categorias where id = $1 and usuario_id = $2', 
+            [categoria_id, id_usuario]
         )
 
-        if (categoriaUsuario.rows[0].usuario_id !== id_usuario) {
+        if (categoriaUsuario.rowCount < 1) {
 
             return res.status(400).json({
                 mensagem: "A categoria não pertence ao usuário ou não existe."
@@ -66,7 +67,35 @@ const listarTransacoes = async (req, res) => {
     }
 }
 
+const detalharTransacao = async (req, res) => {
+
+    try {
+
+        const id_trasacao = req.params.id
+        const id_usuario = req.usuario[0].id
+
+        const transacaoUsuario = await pool.query(
+            'select * from transacoes where id = $1 and usuario_id = $2', 
+            [id_trasacao, id_usuario]
+        )
+
+        if (transacaoUsuario.rowCount < 1) {
+
+            return res.status(400).json({
+                mensagem: "A transações não pertence ao usuário ou não existe."
+            })
+        }
+
+        return res.status(200).json(transacaoUsuario.rows[0])
+        
+    } catch (error) {
+        
+        return res.status(500).json({ mensagem: error.message })
+    }
+}
+
 module.exports = {
     criarTransacao,
-    listarTransacoes
+    listarTransacoes,
+    detalharTransacao
 }

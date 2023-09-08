@@ -97,7 +97,9 @@
 
 ## ⭐Detalhar uma transação do usuário logado
 
-🚧 em construção 🚧
+-   verifiquei se o id da transação informado no parametro era do usuario logado
+-   verifiquei se existia a transação
+-   retornei todos os dados da transação
 
 ## ⭐Cadastrar transação para o usuário logado
 

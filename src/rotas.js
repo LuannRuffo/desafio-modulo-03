@@ -3,7 +3,7 @@ const { cadastroUsuario, detalharUsuario, atualizarUsuario } = require('./contro
 const login = require('./controladores/login');
 const autenticarToken = require('./verificadores/autenticadortoken');
 const { criarCategoria, listarCategoria, detalharCategoriaLogado, atualizarCategoria, deletarCategoria } = require('./controladores/categorias');
-const { criarTransacao, listarTransacoes } = require('./controladores/transacoes');
+const { criarTransacao, listarTransacoes, detalharTransacao } = require('./controladores/transacoes');
 
 const rotas = Router()
 
@@ -21,5 +21,6 @@ rotas.put('/categoria/:id', atualizarCategoria)
 rotas.delete('/categoria/:id', deletarCategoria)
 rotas.post('/transacao', criarTransacao)
 rotas.get('/transacao', listarTransacoes)
+rotas.get('/transacao/:id', detalharTransacao)
 
 module.exports = rotas
