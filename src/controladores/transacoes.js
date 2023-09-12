@@ -94,8 +94,62 @@ const detalharTransacao = async (req, res) => {
     }
 }
 
+const atualizarTrasacao = async (req, res) => {
+
+    try {
+
+        const { descricao, valor, data, categoria_id, tipo } = req.body
+        const id_trasacao = req.params.id
+        const id_usuario = req.usuario[0].id
+
+        if (!descricao || !valor || !data || !categoria_id || !tipo) {
+
+            return res.status(400).json({
+                mensagem: "todos os campos são obrigatório"
+            })
+        }
+
+        if (tipo.toLowerCase() !== 'entrada' || tipo.toLowerCase() !== 'saida') {
+
+            return res.status(404).json({
+                mensagem: "O tipo deve ser entrada ou saida"
+            })
+        }
+
+        const transacaoUsuario = await pool.query(
+            'select * from transacoes where id = $1 and usuario_id = $2', 
+            [id_trasacao, id_usuario]
+        )
+
+        if (transacaoUsuario.rowCount < 1) {
+
+            return res.status(400).json({
+                mensagem: "A transações não pertence ao usuário ou não existe."
+            })
+        }
+
+        await pool.query(
+            `update transacoes
+            set descricao = $1
+            valor = $2
+            data = $3
+            categoria_id = $4
+            tipo = $5
+            where id = $6`,
+            [descricao, valor, data, categoria_id, tipo, id_trasacao]
+        )
+
+        return res.status(204).json()
+        
+    } catch (error) {
+        
+        return res.status(500).json({ mensagem: error.message })
+    }
+}
+
 module.exports = {
     criarTransacao,
     listarTransacoes,
-    detalharTransacao
+    detalharTransacao,
+    atualizarTrasacao
 }
